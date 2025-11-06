@@ -1,0 +1,754 @@
+/* App.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+/* ✅ 다크 모드 기본 스타일 */
+.trading-dashboard {
+  background: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ✅ 라이트 모드 스타일 */
+.light-mode .trading-dashboard {
+  background: #f8f9fa;
+  color: #333;
+}
+
+/* ✅ 로딩 화면 배경 설정 */
+.App.trading-dashboard {
+  background: #0a0a0a;
+  min-height: 100vh;
+}
+
+.light-mode.App.trading-dashboard {
+  background: #f8f9fa;
+}
+
+/* ✅ 대시보드 헤더 스타일 */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  font-size: 2em;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.light-mode .logo {
+  color: #000000;
+}
+
+.logo-subtitle {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: -5px;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.light-mode .logo-subtitle {
+  color: #666;
+}
+
+/* ✅ 모드 토글 버튼 스타일 */
+.mode-toggle-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+
+.mode-toggle-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #888;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mode-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .mode-toggle-btn {
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.light-mode .mode-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 상단 계정 요약 */
+.account-summary {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid #333;
+  box-sizing: border-box;
+}
+
+.light-mode .account-summary {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.summary-item {
+  text-align: center;
+}
+
+.summary-label {
+  color: #ffffff;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+.light-mode .summary-label {
+  color: #666;
+}
+
+.summary-value {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #fff;
+}
+
+.light-mode .summary-value {
+  color: #333;
+}
+
+.summary-value.profit {
+  color: #00ff88;
+}
+
+.light-mode .summary-value.profit {
+  color: #28a745;
+}
+
+.summary-value.loss {
+  color: #ff4444;
+}
+
+.light-mode .summary-value.loss {
+  color: #dc3545;
+}
+
+/* ✅ 메인 컨텐츠 전체 너비로 변경 */
+.main-content-full {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 25px;
+  min-height: calc(100vh - 300px);
+  box-sizing: border-box;
+}
+
+/* ✅ 섹션 카드 전체 너비 사용 */
+.main-content-full .section-card {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* ✅ 전체 레이아웃 컨테이너 */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* 섹션 카드 */
+.section-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.light-mode .section-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  box-sizing: border-box;
+}
+
+.light-mode .section-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.light-mode .section-header h2 {
+  color: #333;
+}
+
+.toggle-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.8em;
+  box-sizing: border-box;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .toggle-btn {
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.light-mode .toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 스타일 */
+.positions-table,
+.positions-history-table {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ✅ 테이블 헤더와 행의 그리드 템플릿 조정 */
+.positions-table .table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.8fr 0.8fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  padding: 15px 20px;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  font-size: 0.75em;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+}
+
+.light-mode .positions-table .table-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000000;
+}
+
+/* 포지션 히스토리 테이블 헤더 */
+.positions-history-table .table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.8fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  padding: 15px 20px;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  font-size: 0.75em;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+}
+
+.light-mode .positions-history-table .table-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000000;
+}
+
+.table-body {
+  max-height: 400px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ✅ 현재 포지션 테이블 행 */
+.positions-table .table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.8fr 0.8fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #252525;
+  font-size: 0.8em;
+  color: #ffffff;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.light-mode .positions-table .table-row {
+  border-bottom: 1px solid #f0f0f0;
+  color: #000000;
+}
+
+/* ✅ 포지션 히스토리 테이블 행 */
+.positions-history-table .table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.8fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #252525;
+  font-size: 0.8em;
+  color: #ffffff;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.light-mode .positions-history-table .table-row {
+  border-bottom: 1px solid #f0f0f0;
+  color: #000000;
+}
+
+.table-row:hover {
+  background: #252525;
+}
+
+.light-mode .table-row:hover {
+  background: #f8f9fa;
+}
+
+/* ✅ 테이블 내용 색상 통일 */
+.positions-table .table-row,
+.positions-history-table .table-row {
+  color: #ffffff;
+}
+
+.light-mode .positions-table .table-row,
+.light-mode .positions-history-table .table-row {
+  color: #000000;
+}
+
+/* ✅ Instrument 색상 통일 */
+.instrument {
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.85em;
+}
+
+.light-mode .instrument {
+  color: #000000;
+}
+
+/* 사이드 표시 - 크기 축소 */
+.side {
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.7em;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  width: 45px;
+  box-sizing: border-box;
+}
+
+.side.long {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+  border: 1px solid #00ff88;
+}
+
+.light-mode .side.long {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid #28a745;
+}
+
+.side.short {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border: 1px solid #ff4444;
+}
+
+.light-mode .side.short {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+/* 청산 가격 */
+.liquidation {
+  color: #ffffff !important;
+}
+
+.light-mode .liquidation {
+  color: #dc3545 !important;
+}
+
+/* 새로고침 섹션 */
+.refresh-section {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #333;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+.light-mode .refresh-section {
+  border-top: 1px solid #e0e0e0;
+}
+
+.refresh-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #888;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .refresh-btn {
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.light-mode .refresh-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.last-updated {
+  color: #666;
+  font-size: 0.8em;
+}
+
+.light-mode .last-updated {
+  color: #666;
+}
+
+/* 데이터 없음 */
+.no-data {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  padding: 40px 20px;
+  grid-column: 1 / -1;
+  box-sizing: border-box;
+}
+
+.light-mode .no-data {
+  color: #666;
+}
+
+/* ✅ 로딩 화면 수정 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.8em;
+  color: #fff;
+}
+
+.light-mode .loading {
+  color: #000;
+}
+
+/* 수익/손실 색상 */
+.profit {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.light-mode .profit {
+  color: #28a745;
+}
+
+.loss {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.light-mode .loss {
+  color: #dc3545;
+}
+
+/* 스크롤바 스타일링 */
+.table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.light-mode .table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #00ff88;
+  border-radius: 3px;
+}
+
+.light-mode .table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #00cc6a;
+}
+
+.light-mode .table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .positions-table .table-header,
+  .positions-table .table-row {
+    grid-template-columns: repeat(5, 1fr);
+    font-size: 0.7em;
+  }
+  
+  .positions-history-table .table-header,
+  .positions-history-table .table-row {
+    grid-template-columns: repeat(4, 1fr);
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 768px) {
+  .trading-dashboard {
+    padding: 15px 10px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .logo {
+    font-size: 1.8em;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.8em;
+  }
+  
+  .dashboard-header .mode-toggle-section {
+    align-self: flex-end;
+    margin-top: -45px;
+  }
+
+  .mode-toggle-btn {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+
+  .positions-table .table-header,
+  .positions-table .table-row {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px 15px;
+    gap: 5px;
+  }
+  
+  .positions-history-table .table-header,
+  .positions-history-table .table-row {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px 15px;
+    gap: 5px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 15px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.1em;
+  }
+  
+  .summary-value {
+    font-size: 1.5em;
+  }
+  
+  .summary-label {
+    font-size: 0.8em;
+  }
+
+  .account-summary {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .main-content-full {
+    gap: 15px;
+    margin-bottom: 15px;
+    min-height: calc(100vh - 250px);
+  }
+
+  .refresh-section {
+    padding: 15px;
+  }
+
+  .table-body {
+    max-height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trading-dashboard {
+    padding: 10px 5px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 10px;
+  }
+  
+  .logo {
+    font-size: 1.6em;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.75em;
+  }
+  
+  .dashboard-header .mode-toggle-section {
+    margin-top: -40px;
+  }
+  
+  .mode-toggle-btn {
+    padding: 4px 8px;
+    font-size: 0.7em;
+  }
+
+  .account-summary {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .section-card {
+    margin-bottom: 15px;
+  }
+
+  .section-header {
+    padding: 12px;
+  }
+
+  .positions-table .table-header,
+  .positions-table .table-row {
+    grid-template-columns: 1fr 1fr;
+    font-size: 0.6em;
+    padding: 8px 10px;
+  }
+  
+  .positions-history-table .table-header,
+  .positions-history-table .table-row {
+    grid-template-columns: 1fr 1fr;
+    font-size: 0.6em;
+    padding: 8px 10px;
+  }
+
+  .table-body {
+    max-height: 300px;
+  }
+
+  .refresh-section {
+    padding: 10px;
+  }
+
+  .last-updated {
+    font-size: 0.7em;
+  }
+
+  .main-content-full {
+    min-height: calc(100vh - 200px);
+  }
+}
+
+/* ✅ 부드러운 전환 효과 */
+.app-container,
+.trading-dashboard,
+.account-summary,
+.section-card,
+.section-header,
+.table-header,
+.table-row,
+.summary-value,
+.summary-label,
+.instrument,
+.mode-toggle-btn,
+.toggle-btn,
+.refresh-btn {
+}
