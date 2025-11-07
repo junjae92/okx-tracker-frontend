@@ -328,7 +328,7 @@ html, body {
 .light-mode .positions-history-table .table-header {
   background: #f8f9fa;
   border-bottom: 1px solid #e0e0e0;
-  color: #000000;
+  color: #888;
 }
 
 .table-body {
