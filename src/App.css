@@ -41,8 +41,20 @@ html, body {
   height: 100vh;
   font-size: 1.8em;
   font-weight: bold;
-  background: #0a0a0a !important;
-  color: #ffffff !important;
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
+/*✅ 라이트 모드 스타일 */
+.light-mode .loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.8em;
+  font-weight: bold;
+  background: #ffffff;
+  color: #0a0a0a;
 }
 
 /* ✅ 대시보드 헤더 스타일 */
