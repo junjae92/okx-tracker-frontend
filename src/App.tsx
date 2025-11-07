@@ -10,7 +10,6 @@ function App() {
   const [positionHistory, setPositionHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ localStorage 기반 토글 상태 유지
   const [positionsExpanded, setPositionsExpanded] = useState(
     localStorage.getItem('positionsExpanded') === 'false' ? false : true
   );
@@ -21,7 +20,6 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // ✅ 다크모드 상태 불러오기
   useEffect(() => {
     const saved = localStorage.getItem('darkMode');
     if (saved === 'false') setIsDarkMode(false);
@@ -34,7 +32,6 @@ function App() {
     localStorage.setItem('darkMode', newMode.toString());
   };
 
-  // ✅ 데이터 불러오기
   const fetchBalance = async () => {
     try {
       const response = await axios.get(`${API_BASE}/account/balance`);
@@ -56,7 +53,9 @@ function App() {
   const fetchPositionHistory = async () => {
     try {
       const response = await axios.get(`${API_BASE}/account/positions-history?limit=50`);
+      
       if (response.data && response.data.data?.length > 0) {
+        console.log('포지션 히스토리 데이터:', response.data.data);
         setPositionHistory(response.data.data);
         return;
       }
@@ -112,12 +111,43 @@ function App() {
     });
   };
 
-  const formatTime = (timestamp: string) => {
-    if (!timestamp) return '-';
-    const date = new Date(parseInt(timestamp));
-    return date.toLocaleString('ko-KR', {
-      month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
+  // ✅ 수정된 formatTime 함수
+  const formatTime = (timestamp: any): string => {
+    if (!timestamp && timestamp !== 0) return '-';
+    
+    try {
+      let timeValue: number;
+
+      if (typeof timestamp === 'string') {
+        timeValue = parseInt(timestamp);
+      } else if (typeof timestamp === 'number') {
+        timeValue = timestamp;
+      } else {
+        return '-';
+      }
+      
+      if (isNaN(timeValue) || timeValue <= 0) return '-';
+      
+      // 밀리초 단위 확인 및 변환
+      if (timeValue < 1000000000000) {
+        timeValue = timeValue * 1000;
+      }
+      
+      const date = new Date(timeValue);
+      
+      if (isNaN(date.getTime())) return '-';
+      
+      return date.toLocaleString('ko-KR', {
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit'
+      });
+    } catch (error) {
+      console.error('시간 변환 오류:', timestamp);
+      return '-';
+    }
   };
 
   const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', 'USDT Perp').replace('-', '') || '-';
