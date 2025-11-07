@@ -56,7 +56,18 @@ function App() {
       
       if (response.data && response.data.data?.length > 0) {
         console.log('포지션 히스토리 데이터:', response.data.data);
-        setPositionHistory(response.data.data);
+        // ✅ 실제 데이터 구조에 맞게 변환
+        const formattedHistory = response.data.data.map((item: any) => ({
+          instId: item.instId || 'N/A',
+          posSide: item.direction || 'unknown',
+          openTime: item.openTime || item.cTime, // cTime을 openTime으로 사용
+          closeTime: item.cTime, // cTime을 closeTime으로 사용
+          openAvgPx: item.openAvgPx || '0',
+          closeAvgPx: item.closeAvgPx || '0',
+          realizedPnl: item.realizedPnl || '0',
+          sz: item.closeTotalPos || '0'
+        }));
+        setPositionHistory(formattedHistory);
         return;
       }
     } catch (error) {
