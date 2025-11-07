@@ -132,7 +132,7 @@ function App() {
   const profitPercentage = (totalUnrealizedPnl / depositAmount) * 100;
 
   return (
-    <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`app-container trading-dashboard ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="dashboard-header">
         <div className="logo-section">
           <h1 className="logo">뚝딱홀딩스</h1>
