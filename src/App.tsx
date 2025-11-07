@@ -51,7 +51,7 @@ function App() {
     }
   };
 
-  // ✅ 수정된 포지션 히스토리 조회 함수
+  // ✅ 수정된 포지션 히스토리 조회 함수 - API pnlRatio 사용
   const fetchPositionHistory = async () => {
     try {
       const response = await axios.get(`${API_BASE}/account/positions-history?limit=50`);
@@ -59,7 +59,7 @@ function App() {
       if (response.data && response.data.data?.length > 0) {
         console.log('✅ 포지션 히스토리 원본 데이터:', response.data.data);
         
-        // ✅ 수정: 레버리지 데이터 포함
+        // ✅ API의 pnlRatio를 그대로 사용
         const formattedHistory = response.data.data.map((item: any) => ({
           instId: item.instId || 'N/A',
           posSide: item.posSide || 'unknown',
@@ -68,12 +68,12 @@ function App() {
           openAvgPx: item.openAvgPx || '0',
           closeAvgPx: item.closeAvgPx || '0',
           realizedPnl: item.realizedPnl || '0',
+          pnlRatio: item.pnlRatio || '0', // ✅ API에서 제공하는 pnlRatio 사용
           sz: item.sz || '0',
-          lever: item.lever || '1', // ✅ 레버리지 데이터 포함
-          margin: item.margin || '0' // ✅ 마진 데이터 포함
+          lever: item.lever || '1'
         }));
         
-        console.log('🎯 변환된 히스토리:', formattedHistory);
+        console.log('🎯 변환된 히스토리 (pnlRatio 포함):', formattedHistory);
         setPositionHistory(formattedHistory);
         return;
       }
@@ -96,10 +96,11 @@ function App() {
             openAvgPx: fill.fillPx,
             closeAvgPx: fill.fillPx,
             realizedPnl: fill.pnl || fill.fee || '0',
+            pnlRatio: '0', // 체결 내역에는 pnlRatio가 없음
             sz: fill.fillSz,
             tradeId: fill.tradeId,
             orderId: fill.ordId,
-            lever: '5' // ✅ 체결 내역은 기본 레버리지 5로 설정
+            lever: '5'
           }));
         setPositionHistory(convertedHistory);
       }
@@ -304,28 +305,7 @@ function App() {
             <div className="table-body">
               {positionHistory.map((h, i) => {
                 const realizedPnl = parseFloat(h.realizedPnl || 0);
-                const openAvgPx = parseFloat(h.openAvgPx || 0);
-                const closeAvgPx = parseFloat(h.closeAvgPx || 0);
-                const sz = parseFloat(h.sz || 0);
-                const lever = parseFloat(h.lever || 1);
-                
-                // ✅ 올바른 PnL% 계산 (레버리지 반영)
-                let pnlPercentage = 0;
-                
-                if (openAvgPx > 0 && sz > 0) {
-                  if (h.posSide === 'short') {
-                    // 숏 포지션: (진입가 - 종료가) * 수량
-                    const calculatedPnl = (openAvgPx - closeAvgPx) * sz;
-                    pnlPercentage = (calculatedPnl / (openAvgPx * sz)) * 100 * lever;
-                  } else if (h.posSide === 'long') {
-                    // 롱 포지션: (종료가 - 진입가) * 수량
-                    const calculatedPnl = (closeAvgPx - openAvgPx) * sz;
-                    pnlPercentage = (calculatedPnl / (openAvgPx * sz)) * 100 * lever;
-                  } else {
-                    // unknown side인 경우 기본 계산
-                    pnlPercentage = (realizedPnl / (openAvgPx * sz)) * 100 * lever;
-                  }
-                }
+                const pnlRatio = parseFloat(h.pnlRatio || 0) * 100; // ✅ pnlRatio를 퍼센트로 변환
                 
                 return (
                   <div key={i} className="table-row">
@@ -333,10 +313,10 @@ function App() {
                     <div>{formatTime(h.closeTime)}</div>
                     <div>{formatInstrument(h.instId)}</div>
                     <div className={`side ${h.posSide?.toLowerCase()}`}>{h.posSide}</div>
-                    <div>${formatNumber(openAvgPx)}</div>
-                    <div>${formatNumber(closeAvgPx)}</div>
+                    <div>${formatNumber(parseFloat(h.openAvgPx || 0))}</div>
+                    <div>${formatNumber(parseFloat(h.closeAvgPx || 0))}</div>
                     <div className={realizedPnl >= 0 ? 'profit' : 'loss'}>
-                      ${formatNumber(realizedPnl)} ({realizedPnl >= 0 ? '+' : ''}{formatNumber(pnlPercentage, 2)}%)
+                      ${formatNumber(realizedPnl)} ({realizedPnl >= 0 ? '+' : ''}{formatNumber(pnlRatio, 2)}%)
                     </div>
                   </div>
                 );
