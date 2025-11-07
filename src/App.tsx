@@ -164,7 +164,13 @@ function App() {
   const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', 'USDT Perp').replace('-', '') || '-';
 
   if (loading) {
-    return <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>데이터를 불러오는 중...</div>;
+    return (
+      <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+        <div className="loading-screen">
+          데이터를 불러오는 중...
+        </div>
+      </div>
+    );
   }
 
   const depositAmount = 464.97;

@@ -33,14 +33,16 @@ html, body {
   color: #333;
 }
 
-/* ✅ 로딩 화면 배경 설정 */
-.App.trading-dashboard {
-  background: #0a0a0a;
-  min-height: 100vh;
-}
-
-.light-mode.App.trading-dashboard {
-  background: #f8f9fa;
+/* ✅ 로딩 화면 - 항상 다크 모드 스타일 */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.8em;
+  font-weight: bold;
+  background: #0a0a0a !important;
+  color: #ffffff !important;
 }
 
 /* ✅ 대시보드 헤더 스타일 */
@@ -512,20 +514,6 @@ html, body {
   color: #666;
 }
 
-/* ✅ 로딩 화면 수정 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 1.8em;
-  color: #fff;
-}
-
-.light-mode .loading {
-  color: #000;
-}
-
 /* 수익/손실 색상 */
 .profit {
   color: #00ff88;
@@ -762,4 +750,5 @@ html, body {
 .mode-toggle-btn,
 .toggle-btn,
 .refresh-btn {
+  transition: all 0.3s ease;
 }
