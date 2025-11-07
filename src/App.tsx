@@ -1,3 +1,4 @@
+/* App.tsx */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -50,23 +51,27 @@ function App() {
     }
   };
 
+  // ✅ 수정된 포지션 히스토리 조회 함수
   const fetchPositionHistory = async () => {
     try {
       const response = await axios.get(`${API_BASE}/account/positions-history?limit=50`);
       
       if (response.data && response.data.data?.length > 0) {
-        console.log('포지션 히스토리 데이터:', response.data.data);
-        // ✅ 실제 데이터 구조에 맞게 변환
+        console.log('✅ 포지션 히스토리 원본 데이터:', response.data.data);
+        
+        // ✅ 수정: 이미 정상적인 데이터가 있으므로 그대로 사용
         const formattedHistory = response.data.data.map((item: any) => ({
           instId: item.instId || 'N/A',
-          posSide: item.direction || 'unknown',
-          openTime: item.openTime || item.cTime, // cTime을 openTime으로 사용
-          closeTime: item.cTime, // cTime을 closeTime으로 사용
+          posSide: item.posSide || 'unknown',
+          openTime: item.openTime,
+          closeTime: item.closeTime,
           openAvgPx: item.openAvgPx || '0',
           closeAvgPx: item.closeAvgPx || '0',
           realizedPnl: item.realizedPnl || '0',
-          sz: item.closeTotalPos || '0'
+          sz: item.sz || '0'
         }));
+        
+        console.log('🎯 변환된 히스토리:', formattedHistory);
         setPositionHistory(formattedHistory);
         return;
       }
@@ -74,9 +79,11 @@ function App() {
       console.log('포지션 히스토리 실패:', error);
     }
 
+    // ✅ 포지션 히스토리가 실패할 때만 체결 내역으로 폴백
     try {
       const response = await axios.get(`${API_BASE}/account/fills?limit=100`);
       if (response.data?.data) {
+        console.log('🔄 체결 내역으로 폴백');
         const convertedHistory = response.data.data
           .filter((fill: any) => fill.state === 'filled')
           .map((fill: any) => ({
@@ -122,7 +129,6 @@ function App() {
     });
   };
 
-  // ✅ 수정된 formatTime 함수
   const formatTime = (timestamp: any): string => {
     if (!timestamp && timestamp !== 0) return '-';
     
