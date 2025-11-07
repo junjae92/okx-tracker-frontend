@@ -246,21 +246,27 @@ function App() {
               <div>Unrealized P&L</div>
             </div>
             <div className="table-body">
-              {positions.map((p, i) => (
-                <div key={i} className="table-row">
-                  <div>{formatInstrument(p.instId)}</div>
-                  <div>{formatTime(p.cTime)}</div>
-                  <div>${formatNumber(parseFloat(p.avgPx || 0))}</div>
-                  <div>${formatNumber(parseFloat(p.markPx || 0))}</div>
-                  <div className={`side ${p.posSide?.toLowerCase()}`}>{p.posSide}</div>
-                  <div>{p.lever || 1}x</div>
-                  <div>${formatNumber(parseFloat(p.liqPx || 0))}</div>
-                  <div>${formatNumber(parseFloat(p.margin || 0))}</div>
-                  <div className={parseFloat(p.upl || 0) >= 0 ? 'profit' : 'loss'}>
-                    {parseFloat(p.upl || 0) >= 0 ? '+' : ''}{formatNumber(parseFloat(p.upl || 0))} USDT
+              {positions.map((p, i) => {
+                const upl = parseFloat(p.upl || 0);
+                const margin = parseFloat(p.margin || 0);
+                const pnlPercentage = margin !== 0 ? (upl / margin) * 100 : 0;
+                
+                return (
+                  <div key={i} className="table-row">
+                    <div>{formatInstrument(p.instId)}</div>
+                    <div>{formatTime(p.cTime)}</div>
+                    <div>${formatNumber(parseFloat(p.avgPx || 0))}</div>
+                    <div>${formatNumber(parseFloat(p.markPx || 0))}</div>
+                    <div className={`side ${p.posSide?.toLowerCase()}`}>{p.posSide}</div>
+                    <div>{p.lever || 1}x</div>
+                    <div>${formatNumber(parseFloat(p.liqPx || 0))}</div>
+                    <div>${formatNumber(parseFloat(p.margin || 0))}</div>
+                    <div className={upl >= 0 ? 'profit' : 'loss'}>
+                      ${formatNumber(upl)} ({upl >= 0 ? '+' : ''}{formatNumber(pnlPercentage, 2)}%)
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -293,19 +299,29 @@ function App() {
               <div>Realized P&L</div>
             </div>
             <div className="table-body">
-              {positionHistory.map((h, i) => (
-                <div key={i} className="table-row">
-                  <div>{formatTime(h.openTime)}</div>
-                  <div>{formatTime(h.closeTime)}</div>
-                  <div>{formatInstrument(h.instId)}</div>
-                  <div className={`side ${h.posSide?.toLowerCase()}`}>{h.posSide}</div>
-                  <div>${formatNumber(parseFloat(h.openAvgPx || 0))}</div>
-                  <div>${formatNumber(parseFloat(h.closeAvgPx || 0))}</div>
-                  <div className={parseFloat(h.realizedPnl || 0) >= 0 ? 'profit' : 'loss'}>
-                    {parseFloat(h.realizedPnl || 0) >= 0 ? '+' : ''}{formatNumber(parseFloat(h.realizedPnl || 0))} USDT
+              {positionHistory.map((h, i) => {
+                const realizedPnl = parseFloat(h.realizedPnl || 0);
+                const openAvgPx = parseFloat(h.openAvgPx || 0);
+                const sz = parseFloat(h.sz || 0);
+                
+                // 포지션 가치 기반으로 수익률 계산
+                const positionValue = openAvgPx * sz;
+                const pnlPercentage = positionValue !== 0 ? (realizedPnl / positionValue) * 100 : 0;
+                
+                return (
+                  <div key={i} className="table-row">
+                    <div>{formatTime(h.openTime)}</div>
+                    <div>{formatTime(h.closeTime)}</div>
+                    <div>{formatInstrument(h.instId)}</div>
+                    <div className={`side ${h.posSide?.toLowerCase()}`}>{h.posSide}</div>
+                    <div>${formatNumber(openAvgPx)}</div>
+                    <div>${formatNumber(parseFloat(h.closeAvgPx || 0))}</div>
+                    <div className={realizedPnl >= 0 ? 'profit' : 'loss'}>
+                      ${formatNumber(realizedPnl)} ({realizedPnl >= 0 ? '+' : ''}{formatNumber(pnlPercentage, 2)}%)
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
