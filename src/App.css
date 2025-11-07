@@ -142,7 +142,7 @@ html, body {
 }
 
 .summary-label {
-  color: #ffffff;
+  color: #888;
   font-size: 0.9em;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -151,7 +151,7 @@ html, body {
 }
 
 .light-mode .summary-label {
-  color: #666;
+  color: #888;
 }
 
 .summary-value {
@@ -204,6 +204,17 @@ html, body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+/* ✅ 라이트 / 다크 모드 배경 직접 제어 */
+.app-container.dark-mode {
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
+.app-container.light-mode {
+  background: #f8f9fa;
+  color: #333;
 }
 
 /* 섹션 카드 */
@@ -287,7 +298,7 @@ html, body {
   background: #252525;
   border-bottom: 1px solid #333;
   font-size: 0.75em;
-  color: #ffffff;
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-sizing: border-box;
@@ -296,7 +307,7 @@ html, body {
 .light-mode .positions-table .table-header {
   background: #f8f9fa;
   border-bottom: 1px solid #e0e0e0;
-  color: #000000;
+  color: #888;
 }
 
 /* 포지션 히스토리 테이블 헤더 */
