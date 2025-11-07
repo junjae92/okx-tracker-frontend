@@ -59,7 +59,7 @@ function App() {
       if (response.data && response.data.data?.length > 0) {
         console.log('✅ 포지션 히스토리 원본 데이터:', response.data.data);
         
-        // ✅ 수정: 이미 정상적인 데이터가 있으므로 그대로 사용
+        // ✅ 수정: 레버리지 데이터 포함
         const formattedHistory = response.data.data.map((item: any) => ({
           instId: item.instId || 'N/A',
           posSide: item.posSide || 'unknown',
@@ -68,7 +68,9 @@ function App() {
           openAvgPx: item.openAvgPx || '0',
           closeAvgPx: item.closeAvgPx || '0',
           realizedPnl: item.realizedPnl || '0',
-          sz: item.sz || '0'
+          sz: item.sz || '0',
+          lever: item.lever || '1', // ✅ 레버리지 데이터 포함
+          margin: item.margin || '0' // ✅ 마진 데이터 포함
         }));
         
         console.log('🎯 변환된 히스토리:', formattedHistory);
@@ -96,7 +98,8 @@ function App() {
             realizedPnl: fill.pnl || fill.fee || '0',
             sz: fill.fillSz,
             tradeId: fill.tradeId,
-            orderId: fill.ordId
+            orderId: fill.ordId,
+            lever: '5' // ✅ 체결 내역은 기본 레버리지 5로 설정
           }));
         setPositionHistory(convertedHistory);
       }
@@ -302,11 +305,27 @@ function App() {
               {positionHistory.map((h, i) => {
                 const realizedPnl = parseFloat(h.realizedPnl || 0);
                 const openAvgPx = parseFloat(h.openAvgPx || 0);
+                const closeAvgPx = parseFloat(h.closeAvgPx || 0);
                 const sz = parseFloat(h.sz || 0);
+                const lever = parseFloat(h.lever || 1);
                 
-                // 포지션 가치 기반으로 수익률 계산
-                const positionValue = openAvgPx * sz;
-                const pnlPercentage = positionValue !== 0 ? (realizedPnl / positionValue) * 100 : 0;
+                // ✅ 올바른 PnL% 계산 (레버리지 반영)
+                let pnlPercentage = 0;
+                
+                if (openAvgPx > 0 && sz > 0) {
+                  if (h.posSide === 'short') {
+                    // 숏 포지션: (진입가 - 종료가) * 수량
+                    const calculatedPnl = (openAvgPx - closeAvgPx) * sz;
+                    pnlPercentage = (calculatedPnl / (openAvgPx * sz)) * 100 * lever;
+                  } else if (h.posSide === 'long') {
+                    // 롱 포지션: (종료가 - 진입가) * 수량
+                    const calculatedPnl = (closeAvgPx - openAvgPx) * sz;
+                    pnlPercentage = (calculatedPnl / (openAvgPx * sz)) * 100 * lever;
+                  } else {
+                    // unknown side인 경우 기본 계산
+                    pnlPercentage = (realizedPnl / (openAvgPx * sz)) * 100 * lever;
+                  }
+                }
                 
                 return (
                   <div key={i} className="table-row">
@@ -315,7 +334,7 @@ function App() {
                     <div>{formatInstrument(h.instId)}</div>
                     <div className={`side ${h.posSide?.toLowerCase()}`}>{h.posSide}</div>
                     <div>${formatNumber(openAvgPx)}</div>
-                    <div>${formatNumber(parseFloat(h.closeAvgPx || 0))}</div>
+                    <div>${formatNumber(closeAvgPx)}</div>
                     <div className={realizedPnl >= 0 ? 'profit' : 'loss'}>
                       ${formatNumber(realizedPnl)} ({realizedPnl >= 0 ? '+' : ''}{formatNumber(pnlPercentage, 2)}%)
                     </div>
