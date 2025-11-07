@@ -206,6 +206,17 @@ html, body {
   box-sizing: border-box;
 }
 
+/* ✅ 라이트 / 다크 모드 배경 직접 제어 */
+.app-container.dark-mode {
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
+.app-container.light-mode {
+  background: #f8f9fa;
+  color: #333;
+}
+
 /* 섹션 카드 */
 .section-card {
   background: #1a1a1a;
