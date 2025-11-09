@@ -1,5 +1,5 @@
 /* App.tsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -109,7 +109,8 @@ function App() {
     }
   };
 
-  const fetchAllData = async () => {
+  // ✅ useCallback으로 fetchAllData 함수를 메모이제이션
+  const fetchAllData = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([fetchBalance(), fetchPositions(), fetchPositionHistory()]);
@@ -118,13 +119,13 @@ function App() {
       console.error('데이터 불러오기 실패:', error);
     }
     setLoading(false);
-  };
+  }, []); // 의존성 배열이 비어있으므로 컴포넌트 마운트 시 한 번만 생성됨
 
   useEffect(() => {
     fetchAllData();
     const interval = setInterval(fetchAllData, 120000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchAllData]); // ✅ 이제 fetchAllData를 의존성 배열에 안전하게 추가
 
   const formatNumber = (num: number, decimals: number = 2) => {
     return num.toLocaleString('en-US', {
