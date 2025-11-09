@@ -545,75 +545,43 @@ html, body {
   color: #dc3545;
 }
 
-/* ✅ 현재 포지션 테이블 스크롤바 스타일링 */
-.positions-table .table-body::-webkit-scrollbar {
+/* ✅ 모든 테이블 스크롤바 스타일링 - 통합 */
+.table-body::-webkit-scrollbar {
   width: 6px;
 }
 
-.positions-table .table-body::-webkit-scrollbar-track {
+.table-body::-webkit-scrollbar-track {
   background: #1a1a1a;
 }
 
-.light-mode .positions-table .table-body::-webkit-scrollbar-track {
+.light-mode .table-body::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.positions-table .table-body::-webkit-scrollbar-thumb {
+.table-body::-webkit-scrollbar-thumb {
   background: #333;
   border-radius: 3px;
 }
 
-.light-mode .positions-table .table-body::-webkit-scrollbar-thumb {
+.light-mode .table-body::-webkit-scrollbar-thumb {
   background: #c1c1c1;
 }
 
-.positions-table .table-body::-webkit-scrollbar-thumb:hover {
+.table-body::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-.light-mode .positions-table .table-body::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* ✅ 포지션 히스토리 테이블 스크롤바 스타일링 */
-.positions-history-table .table-body::-webkit-scrollbar {
-  width: 6px;
-}
-
-.positions-history-table .table-body::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-.light-mode .positions-history-table .table-body::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.positions-history-table .table-body::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 3px;
-}
-
-.light-mode .positions-history-table .table-body::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-}
-
-.positions-history-table .table-body::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.light-mode .positions-history-table .table-body::-webkit-scrollbar-thumb:hover {
+.light-mode .table-body::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
 
 /* ✅ Firefox용 스크롤바 스타일 */
-.positions-table .table-body,
-.positions-history-table .table-body {
+.table-body {
   scrollbar-width: thin;
   scrollbar-color: #333 #1a1a1a;
 }
 
-.light-mode .positions-table .table-body,
-.light-mode .positions-history-table .table-body {
+.light-mode .table-body {
   scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
