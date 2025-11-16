@@ -184,7 +184,7 @@ function App() {
     );
   }
 
-  const depositAmount = 464.97;
+  const depositAmount = 664.7;
   const totalBalance = parseFloat(balance?.data?.[0]?.totalEq || 0);
   const totalUnrealizedPnl = totalBalance - depositAmount;
   const profitPercentage = (totalUnrealizedPnl / depositAmount) * 100;
