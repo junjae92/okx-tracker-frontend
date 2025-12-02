@@ -279,7 +279,7 @@ function App() {
 
       <div className="section-card">
         <div className="section-header">
-          <h2> 안녕 Position History ({positionHistory.length})</h2>
+          <h2> Most Recent 10 Position Histories </h2>
           <button
             className="toggle-btn"
             onClick={() => {
