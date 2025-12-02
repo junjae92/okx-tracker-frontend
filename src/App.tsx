@@ -54,7 +54,7 @@ function App() {
   // ✅ 수정된 포지션 히스토리 조회 함수 - API pnlRatio 사용
   const fetchPositionHistory = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/account/positions-history?limit=50`);
+      const response = await axios.get(`${API_BASE}/account/positions-history?limit=10`);
       
       if (response.data && response.data.data?.length > 0) {
         console.log('✅ 포지션 히스토리 원본 데이터:', response.data.data);
