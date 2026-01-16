@@ -184,7 +184,7 @@ function App() {
     );
   }
 
-  const depositAmount = 769.49;
+  const depositAmount = 276.08;
   const totalBalance = parseFloat(balance?.data?.[0]?.totalEq || 0);
   const totalUnrealizedPnl = totalBalance - depositAmount;
   const profitPercentage = (totalUnrealizedPnl / depositAmount) * 100;
@@ -206,7 +206,7 @@ function App() {
       <div className="account-summary">
         <div className="summary-grid">
           <div className="summary-item">
-            <div className="summary-label">Deposit<br />원/달러환율 - 1440:1 / Upbit-OKX 김치프리미엄 - 4.44% (2025-11-04 13:52)</div>
+            <div className="summary-label">Deposit(2026- )<br />원/달러환율 - 1450.5:1</div>
             <div className="summary-value">${formatNumber(depositAmount)}</div>
           </div>
           <div className="summary-item">
