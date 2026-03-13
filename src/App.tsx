@@ -206,7 +206,7 @@ function App() {
       <div className="account-summary">
         <div className="summary-grid">
           <div className="summary-item">
-            <div className="summary-label">Deposit(2026- )<br />원/달러환율 - 1450.5:1</div>
+            <div className="summary-label">Deposit(2026.02.20(대학원)- )<br />원/달러환율 - 1450.7:1</div>
             <div className="summary-value">${formatNumber(depositAmount)}</div>
           </div>
           <div className="summary-item">
