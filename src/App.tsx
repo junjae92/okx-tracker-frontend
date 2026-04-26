@@ -114,7 +114,7 @@ function App() {
     return isNaN(date.getTime()) ? '-' : date.toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   };
 
-  const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', ' USDT Perp').replace('-', '') || '-';
+  const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', 'USDTPerp').replace('-', '') || '-';
 
   if (loading) {
     return <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}><div className="loading-screen">데이터를 불러오는 중...</div></div>;
