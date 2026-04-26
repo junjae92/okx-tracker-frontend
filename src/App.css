@@ -138,9 +138,9 @@ html, body {
   font-weight: bold;
 }
 
-.profit { color: #00ff88 !important; }
+.profit { color: #28a745 !important; }
 .light-mode .profit { color: #28a745 !important; }
-.loss { color: #ff4444 !important; }
+.loss { color: #dc3545 !important; }
 .light-mode .loss { color: #dc3545 !important; }
 
 /* --- 섹션 카드 --- */
@@ -217,7 +217,7 @@ html, body {
 }
 
 .add-btn {
-  background: #00ff88;
+  background: #28a745;
   color: #000;
   border: none;
   padding: 10px;
@@ -230,15 +230,15 @@ html, body {
 
 .delete-mini-btn {
   background: transparent;
-  color: #ff4444;
-  border: 1px solid #ff4444;
+  color: #dc3545;
+  border: 1px solid #dc3545;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.7em;
   cursor: pointer;
 }
 
-.delete-mini-btn:hover { background: #ff4444; color: #fff; }
+.delete-mini-btn:hover { background: #dc3545; color: #fff; }
 
 /* --- 테이블 공통 --- */
 .table-header {
@@ -303,8 +303,8 @@ html, body {
   width: 50px;
 }
 
-.side.long { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid #00ff88; }
-.side.short { background: rgba(255, 68, 68, 0.15); color: #ff4444; border: 1px solid #ff4444; }
+.side.long { background: rgba(0, 255, 136, 0.15); color: #28a745; border: 1px solid #28a745; }
+.side.short { background: rgba(255, 68, 68, 0.15); color: #dc3545; border: 1px solid #dc3545; }
 
 .refresh-section {
   text-align: center;
