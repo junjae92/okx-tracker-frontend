@@ -60,7 +60,6 @@ function App() {
     } catch (error) { console.log('포지션 히스토리 실패:', error); }
   };
 
-  // 🆕 입출금 내역 가져오기
   const fetchCashflow = async () => {
     try {
       const response = await axios.get(`${API_BASE}/account/cashflow`);
@@ -68,17 +67,15 @@ function App() {
     } catch (error) { console.error('입출금 조회 실패:', error); }
   };
 
-  // 🆕 입출금 내역 추가하기
   const handleCashflowSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await axios.post(`${API_BASE}/account/cashflow`, cashflowInput);
       setCashflowInput({ ...cashflowInput, amount: '', note: '' });
-      fetchCashflow(); // 목록 새로고침
+      fetchCashflow();
     } catch (error) { alert('저장 실패'); }
   };
 
-  // 🆕 입출금 내역 삭제하기
   const handleCashflowDelete = async (id: number) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
@@ -114,17 +111,23 @@ function App() {
     return isNaN(date.getTime()) ? '-' : date.toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   };
 
+  // 띄어쓰기 없이 붙여서 표시
   const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', 'USDT Perp').replace('-', '') || '-';
 
   if (loading) {
     return <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}><div className="loading-screen">데이터를 불러오는 중...</div></div>;
   }
 
-  // 🧮 핵심 수익률 계산 로직 (순 입금액 기반)
+  // 🧮 [핵심 업데이트] 새로운 수익률 계산 로직
   const totalBalance = parseFloat(balance?.data?.[0]?.totalEq || 0);
-  const netDeposit = cashflow.netDeposit || 423.80; // 데이터 없으면 기본값 유지
-  const totalProfit = totalBalance - netDeposit;
-  const profitPercentage = netDeposit !== 0 ? (totalProfit / netDeposit) * 100 : 0;
+  const totalDeposit = cashflow.totalDeposit || 0;
+  const totalWithdrawal = cashflow.totalWithdrawal || 0;
+
+  // 순수익 = (현재 잔고 + 이미 밖으로 뺀 돈) - 처음 넣은 생돈
+  const absoluteProfit = (totalBalance + totalWithdrawal) - totalDeposit;
+  
+  // 수익률 = 순수익 / 총 입금액 (분모가 고정되어 출금 시 왜곡 방지)
+  const totalROI = totalDeposit !== 0 ? (absoluteProfit / totalDeposit) * 100 : 0;
 
   return (
     <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -141,23 +144,29 @@ function App() {
       <div className="account-summary">
         <div className="summary-grid">
           <div className="summary-item">
-            <div className="summary-label">Net Deposit (입금-출금)</div>
-            <div className="summary-value">${formatNumber(netDeposit)}</div>
+            <div className="summary-label">Total Deposit</div>
+            <div className="summary-value" style={{color: '#888'}}>${formatNumber(totalDeposit)}</div>
           </div>
           <div className="summary-item">
-            <div className="summary-label">Total Account Value</div>
+            <div className="summary-label">Total Withdrawal</div>
+            <div className="summary-value" style={{color: '#888'}}>${formatNumber(totalWithdrawal)}</div>
+          </div>
+          <div className="summary-item">
+            <div className="summary-label">Current Equity</div>
             <div className="summary-value">${formatNumber(totalBalance)}</div>
           </div>
-          <div className="summary-item">
-            <div className="summary-label">Total P&L (실시간 수익)</div>
-            <div className={`summary-value ${totalProfit >= 0 ? 'profit' : 'loss'}`}>
-              ${formatNumber(totalProfit)} ({profitPercentage >= 0 ? '+' : ''}{formatNumber(profitPercentage, 2)}%)
+          <div className="summary-item highlight">
+            <div className="summary-label">Net Performance (누적 성적)</div>
+            <div className={`summary-value ${absoluteProfit >= 0 ? 'profit' : 'loss'}`}>
+              {absoluteProfit >= 0 ? '+' : ''}${formatNumber(absoluteProfit)}
+              <span className="roi-percent" style={{fontSize: '0.6em', marginLeft: '8px'}}>
+                ({totalROI >= 0 ? '+' : ''}{formatNumber(totalROI, 2)}%)
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 🆕 1. 입출금 관리 섹션 (수정하기 가장 편한 위치) */}
       <div className="section-card">
         <div className="section-header">
           <h2>Cashflow Management (입출금 관리)</h2>
@@ -170,7 +179,6 @@ function App() {
 
         {cashflowExpanded && (
           <div className="cashflow-content">
-            {/* 입력 폼 */}
             <form className="cashflow-form" onSubmit={handleCashflowSubmit}>
               <input type="date" value={cashflowInput.date} onChange={e => setCashflowInput({...cashflowInput, date: e.target.value})} required />
               <select value={cashflowInput.type} onChange={e => setCashflowInput({...cashflowInput, type: e.target.value})}>
@@ -182,14 +190,9 @@ function App() {
               <button type="submit" className="add-btn">기록 추가</button>
             </form>
 
-            {/* 내역 테이블 */}
             <div className="cashflow-table" style={{marginTop: '20px'}}>
               <div className="table-header">
-                <div>Date</div>
-                <div>Type</div>
-                <div>Amount</div>
-                <div>Note</div>
-                <div>Action</div>
+                <div>Date</div><div>Type</div><div>Amount</div><div>Note</div><div>Action</div>
               </div>
               <div className="table-body">
                 {cashflow.data.map((c: any) => (
@@ -208,7 +211,6 @@ function App() {
         )}
       </div>
 
-      {/* 기존 Active Positions 섹션 */}
       <div className="section-card">
         <div className="section-header">
           <h2>Active Positions ({positions.length})</h2>
@@ -248,7 +250,6 @@ function App() {
         )}
       </div>
 
-      {/* 기존 Recent Histories 섹션 */}
       <div className="section-card">
         <div className="section-header">
           <h2>Most Recent 10 Position Histories</h2>
