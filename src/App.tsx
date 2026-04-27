@@ -198,7 +198,9 @@ function App() {
                 {cashflow.data.map((c: any) => (
                   <div key={c.id} className="table-row">
                     <div>{c.date}</div>
-                    <div className={c.type === 'deposit' ? 'profit' : 'loss'}>{c.type.toUpperCase()}</div>
+                    <div className={c.type === 'deposit' ? 'profit' : 'loss'}>
+                      {c.type === 'deposit' ? '입금' : '출금'}
+                    </div>
                     <div>${formatNumber(c.amount)}</div>
                     <div style={{fontSize: '0.9em', color: '#888'}}>{c.note || '-'}</div>
                     <div><button onClick={() => handleCashflowDelete(c.id)} className="delete-mini-btn">삭제</button></div>
