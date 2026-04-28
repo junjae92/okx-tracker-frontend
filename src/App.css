@@ -9,7 +9,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden; /* 전체 화면이 좌우로 흔들리는 것 방지 */
 }
 
 #root {
@@ -25,15 +25,8 @@ html, body {
   transition: all 0.3s ease;
 }
 
-.app-container.dark-mode {
-  background: #0a0a0a;
-  color: #ffffff;
-}
-
-.app-container.light-mode {
-  background: #f8f9fa;
-  color: #333;
-}
+.app-container.dark-mode { background: #0a0a0a; color: #ffffff; }
+.app-container.light-mode { background: #f8f9fa; color: #333; }
 
 /* --- 헤더 --- */
 .dashboard-header {
@@ -44,28 +37,11 @@ html, body {
   padding: 20px 20px 0 20px;
 }
 
-.logo-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.logo {
-  font-size: 2em;
-  font-weight: bold;
-  letter-spacing: -0.5px;
-}
-
+.logo { font-size: 2em; font-weight: bold; letter-spacing: -0.5px; }
 .dark-mode .logo { color: #fff; }
 .light-mode .logo { color: #000; }
+.logo-subtitle { font-size: 0.9em; color: #888; margin-top: -5px; font-weight: 300; }
 
-.logo-subtitle {
-  font-size: 0.9em;
-  color: #888;
-  margin-top: -5px;
-  font-weight: 300;
-}
-
-/* --- 모드 토글 버튼 --- */
 .mode-toggle-btn {
   background: transparent;
   color: #888;
@@ -74,63 +50,18 @@ html, body {
   padding: 8px 16px;
   cursor: pointer;
   font-size: 0.9em;
-  transition: all 0.3s;
 }
 
-.light-mode .mode-toggle-btn {
-  color: #007bff;
-  border: 1px solid #007bff;
-}
-
-/* --- 🆕 계정 요약 (Summary) 최적화 --- */
-.account-summary {
-  border-radius: 12px;
-  padding: 25px;
-  margin: 20px;
-  border: 1px solid #333;
-}
-
-.dark-mode .account-summary { background: #1a1a1a; border-color: #333; }
+/* --- 계정 요약 (Summary) --- */
+.account-summary { border-radius: 12px; padding: 25px; margin: 20px; border: 1px solid #333; }
+.dark-mode .account-summary { background: #1a1a1a; }
 .light-mode .account-summary { background: white; border-color: #e0e0e0; }
 
-.summary-grid {
-  display: grid;
-  /* 🧮 총입금, 총출금, 잔고, 성적 4개 항목을 위한 4열 배치 */
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 20px;
-}
-
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .summary-item { text-align: center; }
-
-.summary-label {
-  color: #888;
-  font-size: 0.75em;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.summary-value {
-  font-size: 1.6em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 🎯 퍼센트(%) 가독성 다듬기 */
-.roi-percent {
-  font-size: 0.55em; /* 금액보다 확연히 작게 설정 */
-  margin-left: 8px;
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-/* 성적 강조 스타일 */
-.summary-item.highlight .summary-value {
-  font-size: 1.8em;
-  text-shadow: 0 0 15px rgba(40, 167, 69, 0.1);
-}
+.summary-label { color: #888; font-size: 0.75em; margin-bottom: 8px; text-transform: uppercase; }
+.summary-value { font-size: 1.6em; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.roi-percent { font-size: 0.55em; margin-left: 8px; font-weight: 500; opacity: 0.85; }
 
 .profit { color: #28a745 !important; }
 .loss { color: #dc3545 !important; }
@@ -139,11 +70,11 @@ html, body {
 .section-card {
   border-radius: 12px;
   margin: 0 20px 20px 20px;
-  overflow: hidden;
+  overflow: hidden; /* 내부 테이블이 넘치면 카드 안에서 스크롤 되게 함 */
   border: 1px solid #333;
 }
 
-.dark-mode .section-card { background: #1a1a1a; border-color: #333; }
+.dark-mode .section-card { background: #1a1a1a; }
 .light-mode .section-card { background: white; border-color: #e0e0e0; }
 
 .section-header {
@@ -154,89 +85,24 @@ html, body {
   border-bottom: 1px solid #333;
 }
 
-.dark-mode .section-header { background: #252525; }
-.light-mode .section-header { background: #f8f9fa; border-bottom-color: #e0e0e0; }
+.toggle-btn { background: transparent; color: #888; border: 1px solid #888; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
 
-.toggle-btn {
-  background: transparent;
-  color: #888;
-  border: 1px solid #888;
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
+/* --- 🎯 스크롤 핵심 설정 (가로 스크롤 허용) --- */
+.cashflow-table, 
+.positions-table, 
+.positions-history-table {
+  width: 100%;
+  overflow-x: auto; /* 가로 스크롤바 생성 */
+  -webkit-overflow-scrolling: touch; /* iOS 모바일 터치 부드럽게 */
 }
 
-/* --- 입출금 관리 (Cashflow) --- */
-.cashflow-content { padding: 20px; }
-
-.cashflow-form {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1.5fr 0.8fr;
-  gap: 12px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  border: 1px solid #333;
-  margin-bottom: 20px;
-  align-items: center;
-}
-
-.light-mode .cashflow-form { background: #fdfdfd; border-color: #eee; }
-
-.cashflow-form input, 
-.cashflow-form select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #121212;
-  color: white;
-  font-size: 0.85em;
-  outline: none;
-}
-
-.light-mode .cashflow-form input,
-.light-mode .cashflow-form select { background: #fff; border-color: #ccc; color: #333; }
-
-.add-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.delete-mini-btn {
-  background: transparent;
-  color: #dc3545;
-  border: 1px solid #dc3545;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.7em;
-  cursor: pointer;
-}
-
-/* --- 테이블 공통 --- */
-.table-header {
-  background: #252525;
-  color: #888;
-  font-size: 0.75em;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
+/* --- 테이블 공통 스타일 --- */
+.table-header { background: #252525; color: #888; font-size: 0.75em; font-weight: bold; }
 .light-mode .table-header { background: #f8f9fa; }
-
-.table-row {
-  border-bottom: 1px solid #252525;
-  font-size: 0.85em;
-  transition: background 0.2s;
-}
-
+.table-row { border-bottom: 1px solid #252525; font-size: 0.85em; }
 .light-mode .table-row { border-bottom-color: #f0f0f0; }
 
-/* 그리드 정의 */
+/* 🎯 각 테이블별 최소 너비 설정 (이 너비보다 좁아지면 스크롤이 생김) */
 .positions-table .table-header,
 .positions-table .table-row {
   display: grid;
@@ -244,6 +110,7 @@ html, body {
   gap: 12px;
   padding: 12px 20px;
   align-items: center;
+  min-width: 900px; /* 포지션은 열이 많으므로 길게 설정 */
 }
 
 .positions-history-table .table-header,
@@ -253,6 +120,7 @@ html, body {
   gap: 12px;
   padding: 12px 20px;
   align-items: center;
+  min-width: 800px;
 }
 
 .cashflow-table .table-header,
@@ -262,52 +130,55 @@ html, body {
   gap: 12px;
   padding: 10px 20px;
   align-items: center;
+  min-width: 500px;
 }
 
-/* --- 기타 요소 --- */
-.side {
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-size: 0.7em;
-  font-weight: bold;
-  text-align: center;
-  width: 52px;
+/* --- 입출금 폼 --- */
+.cashflow-content { padding: 20px; }
+.cashflow-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
+.cashflow-form input, .cashflow-form select {
+  padding: 10px; border-radius: 6px; border: 1px solid #444; background: #121212; color: white; font-size: 0.85em;
+}
+.light-mode .cashflow-form input, .light-mode .cashflow-form select { background: #fff; border-color: #ccc; color: #333; }
+
+.add-btn { background: #28a745; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.delete-mini-btn { background: transparent; color: #dc3545; border: 1px solid #dc3545; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; cursor: pointer; }
+
+/* --- 기타 --- */
+.side { padding: 2px 4px; border-radius: 3px; font-size: 0.7em; font-weight: bold; text-align: center; width: 52px; }
 .side.long { background: rgba(40, 167, 69, 0.15); color: #28a745; border: 1px solid #28a745; }
 .side.short { background: rgba(220, 53, 69, 0.15); color: #dc3545; border: 1px solid #dc3545; }
-
 .refresh-section { text-align: center; padding: 30px; margin-top: auto; }
-.refresh-btn {
-  background: transparent;
-  color: #888;
-  border: 1px solid #888;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+.refresh-btn { background: transparent; color: #888; border: 1px solid #888; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
 
-.last-updated { color: #666; font-size: 0.8em; margin-top: 10px; }
-
-/* --- 📱 반응형 디자인 --- */
+/* --- 📱 모바일 반응형 최적화 --- */
 @media (max-width: 1024px) {
-  .summary-grid {
-    grid-template-columns: repeat(2, 1fr); /* 태블릿에선 2열로 변경 */
-    gap: 15px;
-  }
-  .cashflow-form {
-    grid-template-columns: 1fr 1fr;
-  }
-  .cashflow-form input:nth-child(4), .add-btn {
-    grid-column: span 2;
-  }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
 }
 
 @media (max-width: 600px) {
-  .summary-grid {
-    grid-template-columns: 1fr; /* 모바일에선 1열로 변경 */
+  .summary-grid { grid-template-columns: 1fr; }
+  .summary-value { font-size: 1.4em; }
+  
+  /* 모바일에서 입력 폼을 세로로 나열하여 사용성 개선 */
+  .cashflow-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .summary-value {
-    font-size: 1.4em;
+  .cashflow-form input, .cashflow-form select, .add-btn {
+    width: 100%;
   }
+  
+  .section-card { margin: 0 10px 15px 10px; }
+  .logo { font-size: 1.5em; }
 }
