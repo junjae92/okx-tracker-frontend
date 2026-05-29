@@ -76,7 +76,8 @@ function App() {
     } catch (error) { alert('저장 실패'); }
   };
 
-  const handleCashflowDelete = async (id: number) => {
+  // 🔑 몽고디비 ObjectId(문자열)를 처리할 수 있도록 타입을 any로 수정
+  const handleCashflowDelete = async (id: any) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
       await axios.delete(`${API_BASE}/account/cashflow/${id}`);
@@ -111,22 +112,16 @@ function App() {
     return isNaN(date.getTime()) ? '-' : date.toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   };
 
-  // 띄어쓰기 없이 붙여서 표시
   const formatInstrument = (instId: string) => instId?.replace('-USDT-SWAP', 'USDT Perp').replace('-', '') || '-';
 
   if (loading) {
     return <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}><div className="loading-screen">데이터를 불러오는 중...</div></div>;
   }
 
-  // 🧮 [핵심 업데이트] 새로운 수익률 계산 로직
   const totalBalance = parseFloat(balance?.data?.[0]?.totalEq || 0);
   const totalDeposit = cashflow.totalDeposit || 0;
   const totalWithdrawal = cashflow.totalWithdrawal || 0;
-
-  // 순수익 = (현재 잔고 + 이미 밖으로 뺀 돈) - 처음 넣은 생돈
   const absoluteProfit = (totalBalance + totalWithdrawal) - totalDeposit;
-  
-  // 수익률 = 순수익 / 총 입금액 (분모가 고정되어 출금 시 왜곡 방지)
   const totalROI = totalDeposit !== 0 ? (absoluteProfit / totalDeposit) * 100 : 0;
 
   return (
@@ -196,14 +191,15 @@ function App() {
               </div>
               <div className="table-body">
                 {cashflow.data.map((c: any) => (
-                  <div key={c.id} className="table-row">
+                  /* 🔑 몽고디비 데이터 연동을 위해 key와 delete 인자를 c.id에서 c._id로 변경 */
+                  <div key={c._id} className="table-row">
                     <div>{c.date}</div>
                     <div className={c.type === 'deposit' ? 'profit' : 'loss'}>
                       {c.type === 'deposit' ? '입금' : '출금'}
                     </div>
                     <div>${formatNumber(c.amount)}</div>
                     <div style={{fontSize: '0.9em', color: '#888'}}>{c.note || '-'}</div>
-                    <div><button onClick={() => handleCashflowDelete(c.id)} className="delete-mini-btn">삭제</button></div>
+                    <div><button onClick={() => handleCashflowDelete(c._id)} className="delete-mini-btn">삭제</button></div>
                   </div>
                 ))}
                 {cashflow.data.length === 0 && <div className="no-data">기록된 입출금 내역이 없습니다.</div>}
